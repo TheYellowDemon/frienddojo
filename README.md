@@ -1,6 +1,6 @@
 # Friend Dojo — timed Awake prototype
 
-Train the selected Rare Friend with a capped Awake (T) budget, earn intelligence-scaled fight XP, and compare simulated RF supporter options. Uses FriendSDK v0.1.2 (upstream commit 762d6f58a73ace723f7f82dc1a61bfa036c21edc).
+Train the selected Rare Friend with a capped Awake (T) budget, earn intelligence-scaled fight XP across eight arena tiers, and compare simulated RF supporter options. Uses FriendSDK v0.1.2 (upstream commit 762d6f58a73ace723f7f82dc1a61bfa036c21edc).
 
 ## Run and test
 
@@ -37,7 +37,7 @@ Intelligence gains a flat 1 per rep and does not boost itself. Proposed study pa
 - Research: 30 T per point until 3,750 INT (final cap).
 - No further intelligence training at 3,750.
 
-The tier sources and costs are our prototype choices, not exact HoboWars mechanics. One- and five-rep batches sum costs across any tier boundary. A batch reaching the final cap only buys remaining points. Combat-stat precision is three decimals.
+The tier sources and costs are prototype choices. One- and five-rep batches sum costs across any tier boundary. A batch reaching the final cap only buys remaining points. Combat-stat precision is three decimals.
 
 Fight XP multiplier:
 1 + 0.10 * (floor(min(INT,1500)/50) + floor(max(INT-1500,0)/100)).
@@ -48,31 +48,33 @@ INT 1,500: +0.225 combat stat per 10 T, +300% XP.
 INT 2,500: +0.300 combat stat per 10 T, +400% XP.
 INT 3,750: +0.390 combat stat per 10 T, +520% XP.
 
-These formulas follow the progression text supplied by the owner. No begging, can depot, equipment or additional HoboWars activities are implemented.
+These formulas follow the progression text supplied by the owner. The prototype focuses on training and arena combat.
 
 ## Combat
 
-Each fight costs 10 T and awards XP once. Opponents are three fixed computer builds, not other owners. Health resets every fight; no stat loss or RF payouts.
+Each fight costs 10 T and awards XP once. The arena has eight fixed computer rivals from level 1 through level 25; they are not other owners. Health resets every fight; no stat loss or RF payouts.
 
-- Health = round(50 + 4 * strength).
+- Health = 90 + 2 * (level - 1). Strength does not affect health.
 - Attacks are scheduled at intervals of 1 / speed; ties are random. Twice the speed schedules twice the attacks over equal elapsed combat time.
 - Dodge chance: flat 5%. Critical chance on a non-dodged attack: flat 10%.
 - Damage = max(1, round((6 + power * 1.2 + strength * 0.25 - defender strength * 0.3) * uniform(0.9,1.1) * critical multiplier)).
 - Critical multiplier = 1.6; otherwise 1.
 - Knockout wins. Limit 100 attacks; at the limit, larger remaining-health percentage wins, ties draw.
-- Base XP = 20 win / 10 loss / 15 draw; multiply by INT bonus and round to whole XP.
+- Win XP = 20 base + 10 for each opponent level above level 1; loss = 10 base; draw = 15 base. Multiply by INT bonus and round to whole XP.
 - Cosmetic level = 1 + floor(total XP / 100).
+- Each level above level 1 adds 2% to all training gains.
 
 Math.random is appropriate here only because fights are simulated and have no monetary payout.
 
-## Simulated RF membership — proposed prices
+## Simulated RF membership and character deposit — proposed prices
 
-Start with 1,000 mock RF, entirely separate from the SDK ledger and actual wallet.
-- Stake: lock 100 mock RF; supporter rate lasts while locked. Unstake returns the full 100 and restores standard rate. No yield, slashing, lock duration or transaction fee.
-- Burn: consume 25 mock RF for 24 hours; no return or auto-renewal. Expiry automatically restores standard recovery.
-- Active options cannot stack. Unstake before switching from stake to burn. Burn users must wait for expiry.
+Start with 10,000 mock RF, entirely separate from the SDK ledger and actual wallet.
+- One-day supporter pass: consume 620 mock RF for 24 hours (about $1 at the reviewed reference quote); no return or auto-renewal.
+- Monthly supporter pass: consume 3,100 mock RF for 30 days (about $5); no return or auto-renewal.
+- Refundable character deposit proposal: 10,000 mock RF, returned when a character is deleted/closed. Character creation/deletion is not implemented in this preview.
+- Only one supporter pass is active at once. Pass time expires automatically, restoring standard recovery.
 - Both options use an explicit in-game simulation confirmation; no wallet requests or real token changes occur.
-- Costs/duration are placeholders for playtesting, not approved token economics.
+- USD targets and rounded RF amounts are placeholders for playtesting, not approved token economics. Any real payment routing to a developer wallet and any RF burn split remain undecided.
 
 Real staking/burning would require a supported SDK capability plus reviewed contracts and verified receipts. None is included or claimed. T, stats and XP have no redemption value.
 
@@ -86,7 +88,7 @@ Controls: touch/click, Tab and Enter/Space. Reduced-motion preference gives inst
 
 ## Assets and publishing
 
-Original Rare Friends character pixels are loaded through the SDK canonical sprite reader. SDK source is Apache-2.0; retain SDK NOTICE.md artwork permissions. UI code is original; no HoboWars artwork is copied.
+Original Rare Friends character pixels are loaded through the SDK canonical sprite reader. SDK source is Apache-2.0; retain SDK NOTICE.md artwork permissions. UI code is original.
 
 Preview: https://frienddojo.vercel.app (public demo).
 Submission remains pending owner approval, builder contact, public source/preview and real-wallet testing. No vibeathon PR has been opened.

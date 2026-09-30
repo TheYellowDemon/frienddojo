@@ -11,7 +11,7 @@
 
 ## Before submission
 
-Owner approval, builder name/contact, public source repository URL, publicly accessible preview, and a real-wallet playtest are still required. The current hosted preview is private. No vibeathon PR has been opened.
+Owner approval, builder name/contact, public source repository URL, publicly accessible preview, and a real-wallet playtest are still required. The current hosted preview is public at https://frienddojo.vercel.app. No vibeathon PR has been opened.
 
 Persistent progression, cross-device saves, real RF staking/burning and real PvP are not implemented. This is a session-based concept prototype; see README.md for all limits. The mock RF ledger is separate from the actual wallet and SDK ledger.
 
